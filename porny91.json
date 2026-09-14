@@ -1,0 +1,36 @@
+[
+  {
+    "id": "porny91",
+    "name": "91PORNY 九色",
+    "api": "https://91porny.com",
+    "nsfw": true,
+    "type": 1,
+    "extra": {
+      "gfw": false,
+      "searchLimit": 24,
+      "js": {
+        "category": [
+          {
+            "text": "首页",
+            "id": "/"
+          },
+          {
+            "text": "视频",
+            "id": "/video"
+          },
+          {
+            "text": "蝌蚪",
+            "id": "/videos"
+          },
+          {
+            "text": "精品",
+            "id": "/vod"
+          }
+        ],
+        "home": "const category=env.get(\"category\",\"/\");const page=env.get(\"page\",1);const parseCards=html=>{const $=utils_1.kitty.load(html);const titles={};$(\"a.title[href]\").each((_,item)=>{const id=$(item).attr(\"href\")??\"\";const title=$(item).text().replace(/\\s+/g,\" \").trim();if(id&&title)titles[id]=title});const movies=[];const seen={};$(\"a.display[href]\").toArray().forEach(item=>{const id=$(item).attr(\"href\")??\"\";if(!/^\\/(?:video|videos|vod)\\/view\\//.test(id))return;if(category!==\"/\"&&!id.startsWith(`${category}/view/`))return;if(seen[id])return;seen[id]=true;const style=$(item).find(\".img\").attr(\"style\")??\"\";const match=style.match(/url\\(['\"]?([^'\")]+)['\"]?\\)/);let cover=match?.[1]??\"\";if(cover.startsWith(\"//\"))cover=`https:${cover}`;else if(cover.startsWith(\"http://\"))cover=`https://${cover.slice(7)}`;movies.push({id,title:titles[id]??id,cover,remark:$(item).text().trim()})});return movies};const pageUrl=category&&category!==\"/\"?`${env.baseUrl}${category}?page=${page}`:env.baseUrl;let movies=parseCards(await(0,utils_1.req)(pageUrl));if(!movies.length&&category!==\"/\"){movies=parseCards(await(0,utils_1.req)(env.baseUrl))}return movies",
+        "detail": "const movieId=env.get(\"movieId\",\"\");const url=movieId.startsWith(\"http\")?movieId:`${env.baseUrl}${movieId}`;const $=utils_1.kitty.load(await(0,utils_1.req)(url));const title=$(\"meta[property=\\\"og:title\\\"]\").attr(\"content\")??$(\"title\").text().split(\" - \")[0].trim();const desc=$(\"meta[name=\\\"description\\\"]\").attr(\"content\")??\"\";let cover=$(\"meta[property=\\\"og:image\\\"]\").attr(\"content\")??\"\";if(cover.startsWith(\"//\"))cover=`https:${cover}`;else if(cover.startsWith(\"http://\"))cover=`https://${cover.slice(7)}`;else if(cover.startsWith(\"/\"))cover=`${env.baseUrl}${cover}`;let videoUrl=$(\"video#video-play\").attr(\"data-src\")??\"\";if(!videoUrl)videoUrl=$(\"video#video-play source\").attr(\"src\")??\"\";videoUrl=videoUrl.replace(/&amp;/g,\"&\");return{id:movieId,title:title||movieId,cover,desc,playlist:videoUrl?[{title:\"\\u9ED8\\u8BA4\",videos:[{text:\"\\u89C6\\u9891\",url:videoUrl}]}]:[]}",
+        "search": "const keyword=env.get(\"keyword\",\"\");const page=env.get(\"page\",1);if(!keyword)return[];const $=utils_1.kitty.load(await(0,utils_1.req)(`${env.baseUrl}/search?keywords=${encodeURIComponent(keyword)}&page=${page}`));const titles={};$(\"a.title[href]\").each((_,item)=>{const id=$(item).attr(\"href\")??\"\";const title=$(item).text().replace(/\\s+/g,\" \").trim();if(id&&title)titles[id]=title});const movies=[];const seen={};$(\"a.display[href]\").toArray().forEach(item=>{const id=$(item).attr(\"href\")??\"\";if(!/^\\/(?:video|videos|vod)\\/view\\//.test(id))return;if(seen[id])return;seen[id]=true;const style=$(item).find(\".img\").attr(\"style\")??\"\";const match=style.match(/url\\(['\"]?([^'\")]+)['\"]?\\)/);let cover=match?.[1]??\"\";if(cover.startsWith(\"//\"))cover=`https:${cover}`;else if(cover.startsWith(\"http://\"))cover=`https://${cover.slice(7)}`;movies.push({id,title:titles[id]??id,cover,remark:$(item).text().trim()})});return movies"
+      }
+    }
+  }
+]
